@@ -23,3 +23,5 @@ __pycache__/
 *.log
 app/data/df_preprocessed.parquet
 data/df_preprocessed.parquet
+
+feature_engineering.ipynb
