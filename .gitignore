@@ -1,0 +1,25 @@
+# Environnement Python
+.venv/
+
+# Cache Python
+__pycache__/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Outils
+.pytest_cache/
+.ruff_cache/
+
+# Fichiers système et éditeurs
+.DS_Store
+.vscode/
+
+# Bases locales
+*.db
+
+# Logs et fichiers temporaires
+*.log
+app/data/df_preprocessed.parquet
+data/df_preprocessed.parquet
