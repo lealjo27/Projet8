@@ -24,4 +24,4 @@ __pycache__/
 app/data/df_preprocessed.parquet
 data/df_preprocessed.parquet
 
-feature_engineering.ipynb
+feature_engineering.ipynbmodeles.ipynb
