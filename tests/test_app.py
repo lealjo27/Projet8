@@ -32,7 +32,7 @@ def test_client_inexistant():
 
 
 def test_montant_invalide():
-    with pytest.raises(ValueError, match="AMT_CREDIT"):
+    with pytest.raises(ValueError, match="montant du crédit"):
         predict_client(
             sk_id_curr=VALID_CLIENT_ID,
             amt_credit=0,
@@ -41,7 +41,7 @@ def test_montant_invalide():
 
 
 def test_duree_invalide():
-    with pytest.raises(ValueError, match="NOMBRE_ANNEE"):
+    with pytest.raises(ValueError, match="durée du crédit"):
         predict_client(
             sk_id_curr=VALID_CLIENT_ID,
             amt_credit=200_000,
