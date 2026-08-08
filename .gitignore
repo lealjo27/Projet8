@@ -25,3 +25,5 @@ app/data/df_preprocessed.parquet
 data/df_preprocessed.parquet
 
 feature_engineering.ipynbmodeles.ipynb
+modeles.ipynb
+modeles.ipynb
