@@ -12,14 +12,14 @@ def test_prediction_valide():
         nbre_annee=10,
     )
 
-    assert result["sk_id_curr"] == VALID_CLIENT_ID
-    assert 0 <= result["risk_probability"] <= 1
-    assert result["prediction"] in [0, 1]
+    assert result["ID Client"] == VALID_CLIENT_ID
+    assert 0 <= result["Taux risque client"] <= 1
+    assert result["Prediction"] in [0, 1]
     assert result["decision"] in [
         "crédit accordé",
         "crédit refusé",
     ]
-    assert result["montant_mensuel"] == 1666.67
+    assert result["Montant mensuel à rembourser"] == 1666.67
 
 
 def test_client_inexistant():
@@ -47,3 +47,21 @@ def test_duree_invalide():
             amt_credit=200_000,
             nbre_annee=0,
         )
+
+def test_refus_taux_endettement():
+    result = predict_client(
+        sk_id_curr=VALID_CLIENT_ID,
+        amt_credit=10_000_000,
+        nbre_annee=2,
+    )
+
+    taux = float(
+        result["Taux endettement du client"]
+        .replace("%", "")
+        .strip()
+    )
+
+    assert taux > 35
+    assert result["Prediction"] == 1
+    assert result["decision"] == "crédit refusé"
+    assert result["Raison"] == "Taux d'endettement trop élevé"
