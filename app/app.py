@@ -1,77 +1,88 @@
+import re
+
 import joblib
 import numpy as np
 import pandas as pd
-import re
+
 
 MODEL_PATH = "app/model/model.pkl"
 DATA_PATH = "app/data/clients_sample.parquet"
 
-# Chargement
+SEUIL_DECISION = 0.1598
+SEUIL_ENDETTEMENT = 0.35
+
+
+# Chargement du modèle et des données
 model = joblib.load(MODEL_PATH)
 df = pd.read_parquet(DATA_PATH)
 
-# Même nettoyage que pendant l’entraînement
+# Même nettoyage des noms de colonnes que pendant l'entraînement
 df = df.rename(
-    columns=lambda col: re.sub(r"[^A-Za-z0-9_]+", "_", col)
+    columns=lambda column: re.sub(r"[^A-Za-z0-9_]+", "_", column)
 )
 
-seuil_decision = 0.1598
-seuil_endettement = 0.35
-
-# Features attendues dans le bon ordre
+# Variables attendues par le modèle, dans le bon ordre
 features = list(model.feature_names_in_)
 
+
 def predict_client(sk_id_curr, amt_credit, nbre_annee):
+    """Calcule le risque et la décision d'octroi d'un crédit."""
+
+    # Validation des valeurs saisies
     if amt_credit <= 0:
-        raise ValueError("AMT_CREDIT doit être supérieur à 0.")
+        raise ValueError(
+            "Le montant du crédit doit être strictement supérieur à 0."
+        )
 
     if nbre_annee <= 0:
-        raise ValueError("NOMBRE_ANNEE doit être supérieur à 0.")
+        raise ValueError(
+            "La durée du crédit doit être strictement supérieure à 0."
+        )
 
-    amt_annuity = amt_credit / nbre_annee
-
-    # Rechercher le client
+    # Recherche du client
     client = df.loc[df["SK_ID_CURR"] == sk_id_curr].copy()
 
     if client.empty:
         raise ValueError(f"Client {sk_id_curr} introuvable.")
 
-    # Une seule ligne client
-    client = client.iloc[[0]]
+    # Conservation d'une seule ligne
+    client = client.iloc[[0]].copy()
 
-    # Remplacer par les valeurs du formulaire
-    client.loc[:, "AMT_CREDIT"] = amt_credit
-    client.loc[:, "AMT_ANNUITY"] = amt_annuity
-
-    # Recalcul des variables liées au nouveau montant du crédit et de la durée
-    revenu = float(client["AMT_INCOME_TOTAL"].iloc[0])
-
-    if revenu < 0:
-        raise ValueError("Le revenu doit être un nombre positif.")
-
-    client.loc[:, "INCOME_CREDIT_PERC"] = revenu / amt_credit
-    client.loc[:, "ANNUITY_INCOME_PERC"] = amt_annuity / revenu
-    client.loc[:, "PAYMENT_RATE"] = amt_annuity / amt_credit
-
-    # Préparer les 795 features
-    X_client = client[features]
-    X_client = X_client.replace([np.inf, -np.inf], np.nan)
-
-
-    # Prédiction
-    probability = float(model.predict_proba(X_client)[0, 1])
-
-    prediction = int(probability >= seuil_decision)
-
-    montant_mensuel = amt_annuity / 12 
+    # Vérification du revenu
     revenu_annuel = float(client["AMT_INCOME_TOTAL"].iloc[0])
+
+    if revenu_annuel <= 0:
+        raise ValueError(
+            "Le revenu annuel doit être strictement supérieur à 0."
+        )
+
+    # Calcul des nouvelles mensualités
+    montant_annuel = amt_credit / nbre_annee
+    montant_mensuel = montant_annuel / 12
     revenu_mensuel = revenu_annuel / 12
 
+    # Mise à jour des données du crédit
+    client.loc[:, "AMT_CREDIT"] = amt_credit
+    client.loc[:, "AMT_ANNUITY"] = montant_annuel
+
+    # Recalcul des variables dépendantes
+    client.loc[:, "INCOME_CREDIT_PERC"] = revenu_annuel / amt_credit
+    client.loc[:, "ANNUITY_INCOME_PERC"] = montant_annuel / revenu_annuel
+    client.loc[:, "PAYMENT_RATE"] = montant_annuel / amt_credit
+
+    # Préparation des variables dans l'ordre attendu
+    X_client = client[features].copy()
+    X_client = X_client.replace([np.inf, -np.inf], np.nan)
+
+    # Prédiction du risque
+    probabilite = float(model.predict_proba(X_client)[0, 1])
+
+    # Calcul du taux d'endettement
     taux_endettement = montant_mensuel / revenu_mensuel
 
-    refus_modele = probability >= seuil_decision
-    refus_endettement = taux_endettement > seuil_endettement
-
+    # Règles de décision
+    refus_modele = probabilite >= SEUIL_DECISION
+    refus_endettement = taux_endettement > SEUIL_ENDETTEMENT
     prediction = int(refus_modele or refus_endettement)
 
     if refus_endettement:
@@ -81,21 +92,22 @@ def predict_client(sk_id_curr, amt_credit, nbre_annee):
     else:
         raison = "Critères respectés"
 
-
-
     return {
         "ID Client": int(sk_id_curr),
-        "Montant crédit": float(amt_credit),
-        "Durée en années": float(nbre_annee),
-        "Montant à rembourser annuellement": round(amt_annuity, 2),
+        "Montant crédit": round(float(amt_credit), 2),
+        "Durée en années": round(float(nbre_annee), 2),
+        "Montant à rembourser annuellement": round(montant_annuel, 2),
         "Montant mensuel à rembourser": round(montant_mensuel, 2),
         "Revenu mensuel": round(revenu_mensuel, 2),
-        "Taux risque client": round(probability, 4),
+        "Taux risque client": round(probabilite, 4),
         "Prediction": prediction,
-        "seuil_decision": seuil_decision,
-        "seuil_endettement": seuil_endettement,
-        "Taux endettement du client": f"{taux_endettement * 100:.2f} %",
-        "decision": "crédit refusé" if prediction else "crédit accordé",
+        "seuil_decision": SEUIL_DECISION,
+        "seuil_endettement": SEUIL_ENDETTEMENT,
+        "Taux endettement du client": (
+            f"{taux_endettement * 100:.2f} %"
+        ),
+        "decision": (
+            "crédit refusé" if prediction else "crédit accordé"
+        ),
         "Raison": raison,
     }
-
