@@ -15,6 +15,8 @@ df = df.rename(
     columns=lambda col: re.sub(r"[^A-Za-z0-9_]+", "_", col)
 )
 
+seuil_decision = 0.1598
+seuil_endettement = 0.35
 
 # Features attendues dans le bon ordre
 features = list(model.feature_names_in_)
@@ -41,24 +43,59 @@ def predict_client(sk_id_curr, amt_credit, nbre_annee):
     client.loc[:, "AMT_CREDIT"] = amt_credit
     client.loc[:, "AMT_ANNUITY"] = amt_annuity
 
+    # Recalcul des variables liées au nouveau montant du crédit et de la durée
+    revenu = float(client["AMT_INCOME_TOTAL"].iloc[0])
+
+    if revenu < 0:
+        raise ValueError("Le revenu doit être un nombre positif.")
+
+    client.loc[:, "INCOME_CREDIT_PERC"] = revenu / amt_credit
+    client.loc[:, "ANNUITY_INCOME_PERC"] = amt_annuity / revenu
+    client.loc[:, "PAYMENT_RATE"] = amt_annuity / amt_credit
+
     # Préparer les 795 features
     X_client = client[features]
     X_client = X_client.replace([np.inf, -np.inf], np.nan)
 
+
     # Prédiction
     probability = float(model.predict_proba(X_client)[0, 1])
-    prediction = int(model.predict(X_client)[0])
+
+    prediction = int(probability >= seuil_decision)
 
     montant_mensuel = amt_annuity / 12 
+    revenu_annuel = float(client["AMT_INCOME_TOTAL"].iloc[0])
+    revenu_mensuel = revenu_annuel / 12
+
+    taux_endettement = montant_mensuel / revenu_mensuel
+
+    refus_modele = probability >= seuil_decision
+    refus_endettement = taux_endettement > seuil_endettement
+
+    prediction = int(refus_modele or refus_endettement)
+
+    if refus_endettement:
+        raison = "Taux d'endettement trop élevé"
+    elif refus_modele:
+        raison = "Risque client trop élevé"
+    else:
+        raison = "Critères respectés"
+
+
 
     return {
-        "sk_id_curr": int(sk_id_curr),
-        "amt_credit": float(amt_credit),
-        "nombre_annees": float(nbre_annee),
-        "montant_annuel": round(amt_annuity, 2),
-        "montant_mensuel": round(montant_mensuel, 2),
-        "risk_probability": round(probability, 4),
-        "prediction": prediction,
-        "decision": "crédit refusé" if prediction == 1 else "crédit accordé",
+        "ID Client": int(sk_id_curr),
+        "Montant crédit": float(amt_credit),
+        "Durée en années": float(nbre_annee),
+        "Montant à rembourser annuellement": round(amt_annuity, 2),
+        "Montant mensuel à rembourser": round(montant_mensuel, 2),
+        "Revenu mensuel": round(revenu_mensuel, 2),
+        "Taux risque client": round(probability, 4),
+        "Prediction": prediction,
+        "seuil_decision": seuil_decision,
+        "seuil_endettement": seuil_endettement,
+        "Taux endettement du client": f"{taux_endettement * 100:.2f} %",
+        "decision": "crédit refusé" if prediction else "crédit accordé",
+        "Raison": raison,
     }
 
