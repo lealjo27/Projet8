@@ -17,4 +17,3 @@ Lancer localement :
 ```bash
 pip install -r requirements.txt
 python app/gradio_app.py
-.
