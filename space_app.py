@@ -1,4 +1,8 @@
-from app.gradio_app import app
+import gradio as gr
 
-if __name__ == "__main__":
-    app.launch()
+app = gr.Interface(
+    fn=lambda x: x,
+    inputs=gr.Textbox(label="Test"),
+    outputs=gr.Textbox(label="Réponse"),
+    title="Test Space"
+)
