@@ -1,5 +1,6 @@
 # Environnement Python
 .venv/
+.env/
 
 # Cache Python
 __pycache__/
@@ -21,10 +22,13 @@ __pycache__/
 
 # Logs et fichiers temporaires
 *.log
-app/data/df_preprocessed.parquet
+credit_app/data/df_preprocessed.parquet
 data/df_preprocessed.parquet
 
 feature_engineering.ipynbmodeles.ipynb
 modeles.ipynb
 modeles.ipynb
 hf-space/
+
+mlflow_archive/
+.env

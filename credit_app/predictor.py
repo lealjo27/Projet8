@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 
 
-MODEL_PATH = "app/model/model.pkl"
-DATA_PATH = "app/data/clients_sample.parquet"
+MODEL_PATH = "credit_app/model/model.pkl"
+DATA_PATH = "credit_app/data/clients_sample.parquet"
 
 SEUIL_DECISION = 0.1598
 SEUIL_ENDETTEMENT = 0.35

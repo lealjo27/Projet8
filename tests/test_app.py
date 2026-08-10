@@ -1,5 +1,5 @@
 import pytest
-from app.app import predict_client, df
+from credit_app.predictor import predict_client, df
 
 
 VALID_CLIENT_ID = int(df["SK_ID_CURR"].iloc[0])
