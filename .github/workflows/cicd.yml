@@ -30,7 +30,7 @@ jobs:
       - name: Construire l'image Docker
         run: docker build -t projet8-scoring .
 
-   deploy_hf:
+  deploy_hf:
     runs-on: ubuntu-latest
     needs: docker
     if: github.ref == 'refs/heads/main'   # uniquement sur main
