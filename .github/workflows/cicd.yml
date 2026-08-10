@@ -61,7 +61,7 @@ jobs:
             --exclude '.github' \
             --exclude '__pycache__' \
             --exclude '.gitattributes' \
-            --exclude='hf-space/' \
+            --exclude 'hf-space/' \
             ./ hf-space/
           status=$?
           if [ $status -ne 0 ]; then
