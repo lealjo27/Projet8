@@ -16,7 +16,7 @@ def gradio_predict(sk_id_curr, amt_credit, nbre_annee):
         return {"erreur": str(error)}
 
 
-demo = gr.Interface(
+app = gr.Interface(
     fn=gradio_predict,
 
     inputs=[
@@ -47,4 +47,4 @@ demo = gr.Interface(
 
 
 if __name__ == "__main__":
-    demo.launch(server_name="0.0.0.0", server_port=7860)
+    app.launch(server_name="0.0.0.0", server_port=7860)
