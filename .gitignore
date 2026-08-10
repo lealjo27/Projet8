@@ -25,8 +25,7 @@ __pycache__/
 credit_app/data/df_preprocessed.parquet
 data/df_preprocessed.parquet
 
-feature_engineering.ipynbmodeles.ipynb
-modeles.ipynb
+feature_engineering.ipynb
 modeles.ipynb
 hf-space/
 
