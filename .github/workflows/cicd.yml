@@ -1,0 +1,82 @@
+name: Tests et Docker et Deploy HF
+
+on:
+  push:
+    branches: [main, tests]
+  pull_request:
+    branches: [main]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Lancer les tests
+        run: python -m pytest -v
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: tests
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Construire l'image Docker
+        run: docker build -t projet8-scoring .
+
+   deploy_hf:
+    runs-on: ubuntu-latest
+    needs: docker
+    if: github.ref == 'refs/heads/main'   # déploiement seulement sur main
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installer git-lfs
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git-lfs rsync
+          git lfs install
+
+      - name: Cloner le Space HF
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+          HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
+        run: |
+          git clone https://huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME hf-space
+          cd hf-space
+          git checkout main || true
+
+      - name: Copier les fichiers du repo projet
+        run: |
+          rsync -av --delete \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '__pycache__' \
+            ./ hf-space/
+
+      - name: Push vers Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+          HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
+        run: |
+          cd hf-space
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add .
+          git commit -m "Deploy from GitHub Actions" || echo "No changes"
+          git remote set-url origin https://USER:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${HF_SPACE_NAME}.git
+          git push origin main      
