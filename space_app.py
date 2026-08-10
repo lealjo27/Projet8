@@ -1,8 +1,5 @@
-import gradio as gr
+# space_app.py
+from app.gradio_app import app
 
-app = gr.Interface(
-    fn=lambda x: x,
-    inputs=gr.Textbox(label="Test"),
-    outputs=gr.Textbox(label="Réponse"),
-    title="Test Space"
-)
+if __name__ == "__main__":
+    app.launch(server_name="0.0.0.0", server_port=7860)
