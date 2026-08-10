@@ -16,13 +16,7 @@ def gradio_predict(sk_id_curr, amt_credit, nbre_annee):
 app = gr.Interface(
     fn=gradio_predict,
     inputs=[
-        gr.Dropdown(
-            choices=client_ids,
-            value=None,
-            label="Identifiant client",
-            filterable=True,
-            allow_custom_value=True,
-        ),
+        gr.Dropdown(choices=client_ids, value=None, label="Identifiant client", filterable=True, allow_custom_value=True),
         gr.Number(label="Montant total du crédit", minimum=1),
         gr.Number(label="Durée du crédit en années", minimum=1),
     ],
