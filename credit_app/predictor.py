@@ -2,7 +2,7 @@ import re
 
 import joblib
 import numpy as np
-import pandas as pd
+import pandas as pd 
 
 
 MODEL_PATH = "credit_app/model/model.pkl"
