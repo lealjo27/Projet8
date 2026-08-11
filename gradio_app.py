@@ -1,12 +1,12 @@
 import gradio as gr
 from credit_app.predictor  import df, predict_client
 import os
-import spaces
+
 
 
 client_ids = df["SK_ID_CURR"].dropna().astype(int).unique().tolist()
 
-@spaces.GPU(duration=30)
+
 
 def gradio_predict(sk_id_curr, amt_credit, nbre_annee):
     try:

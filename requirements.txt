@@ -5,7 +5,7 @@ pandas
 numpy
 pyarrow
 scikit-learn
-xgboost
+xgboost==3.2.0
 mlflow
 joblib
 pytest
