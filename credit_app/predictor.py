@@ -28,7 +28,27 @@ features = list(model.feature_names_in_)
 def predict_client(sk_id_curr, amt_credit, nbre_annee):
     """Calcule le risque et la décision d'octroi d'un crédit."""
 
-    # Validation des valeurs saisies
+    # 1. Vérifier les champs obligatoires
+    if sk_id_curr is None:
+        raise ValueError("L'identifiant client est obligatoire.")
+
+    if amt_credit is None:
+        raise ValueError("Le montant du crédit est obligatoire.")
+
+    if nbre_annee is None:
+        raise ValueError("La durée du crédit est obligatoire.")
+
+    # 2. Convertir et vérifier les types
+    try:
+        sk_id_curr = int(sk_id_curr)
+        amt_credit = float(amt_credit)
+        nbre_annee = float(nbre_annee)
+    except (TypeError, ValueError) as error:
+        raise ValueError(
+            "L'identifiant, le montant et la durée doivent être numériques."
+        ) from error
+
+    # 3. Vérifier les plages de valeurs
     if amt_credit <= 0:
         raise ValueError(
             "Le montant du crédit doit être strictement supérieur à 0."
