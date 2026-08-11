@@ -1,5 +1,6 @@
 import gradio as gr
 from credit_app.predictor  import df, predict_client
+import os
 
 client_ids = df["SK_ID_CURR"].dropna().astype(int).unique().tolist()
 
