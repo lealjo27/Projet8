@@ -1,84 +1,72 @@
-name: Tests et Docker et Deploy HF
+name: CI/CD API Scoring
 
 on:
   push:
-    branches: [main, tests]
+    branches:
+      - "**"
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   tests:
+    name: Tests automatisés
     runs-on: ubuntu-latest
+
     steps:
       - name: Récupérer le dépôt
         uses: actions/checkout@v4
+
       - name: Installer Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
+
       - name: Installer les dépendances
-        run: pip install -r requirements.txt
-      - name: Lancer les tests
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Exécuter les tests
         run: python -m pytest -v
 
   docker:
+    name: Construire l'image Docker
     runs-on: ubuntu-latest
     needs: tests
+
+    # Seulement lors d'un push sur main
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
     steps:
       - name: Récupérer le dépôt
         uses: actions/checkout@v4
-      - name: Construire l'image Docker
-        run: docker build -t projet8-scoring .
 
-  deploy_hf:
+      - name: Construire l'image Docker
+        run: docker build -t projet8-scoring:${{ github.sha }} .
+
+  deploy-render:
+    name: Déployer sur Render
     runs-on: ubuntu-latest
     needs: docker
-    if: github.ref == 'refs/heads/main'   # uniquement sur main
+
     steps:
-      - name: Récupérer le dépôt
-        uses: actions/checkout@v4
-
-      - name: Installer git-lfs
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git-lfs rsync
-          git lfs install
-
-      - name: Cloner le Space HF
+      - name: Déclencher le déploiement Render
         env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          HF_USERNAME: ${{ secrets.HF_USERNAME }}
-          HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          git clone https://USER:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${HF_SPACE_NAME}.git hf-space
-          cd hf-space
-          git checkout main
-
-      - name: Copier les fichiers du repo projet
-        run: |
-          rsync -av --delete \
-            --exclude '.git' \
-            --exclude '.github' \
-            --exclude '__pycache__' \
-            --exclude '.gitattributes' \
-            --exclude 'hf-space/' \
-            --exclude 'Dockerfile' \
-            ./ hf-space/
-          status=$?
-          if [ $status -ne 0 ]; then
-            echo "Erreur rsync réelle: $status"
-            exit $status
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "Le secret RENDER_DEPLOY_HOOK_URL est absent."
+            exit 1
           fi
 
-      - name: Push vers Hugging Face
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          HF_USERNAME: ${{ secrets.HF_USERNAME }}
-          HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
-        run: |
-          cd hf-space
-          git config user.name "github-actions"
-          git config user.email "github-actions@users.noreply.github.com"
-          git add .
-          git commit -m "Deploy from GitHub Actions" || echo "No changes"
-          git push https://USER:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${HF_SPACE_NAME}.git main
+          curl \
+            --fail \
+            --show-error \
+            --silent \
+            --request POST \
+            "$RENDER_DEPLOY_HOOK_URL"
+
+          echo
+          echo "Déploiement Render déclenché."

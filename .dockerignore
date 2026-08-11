@@ -1,8 +1,30 @@
+# Environnement Python local
 .venv/
+venv/
+
+# Archives MLflow inutiles au déploiement
+mlflow_archive/
+
+# Git et CI
 .git/
+.github/
+
+# Caches
 __pycache__/
+*.py[cod]
 .pytest_cache/
-.ipynb_checkpoints/
+.mypy_cache/
+.ruff_cache/
+
+# Développement
+tests/
+notebooks/
 *.ipynb
-*.db
-mlruns/
+.vscode/
+.idea/
+
+# Fichiers temporaires
+.env
+*.log
+.coverage
+htmlcov/
