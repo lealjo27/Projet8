@@ -1,7 +1,7 @@
 import gradio as gr
 from credit_app.predictor  import df, predict_client
 import os
-
+from credit_app.bdd.logger_db import log_to_postgres
 
 
 client_ids = df["SK_ID_CURR"].dropna().astype(int).unique().tolist()
@@ -10,11 +10,23 @@ client_ids = df["SK_ID_CURR"].dropna().astype(int).unique().tolist()
 
 def gradio_predict(sk_id_curr, amt_credit, nbre_annee):
     try:
-        return predict_client(
+        result =  predict_client(
             sk_id_curr=int(sk_id_curr),
             amt_credit=float(amt_credit),
             nbre_annee=float(nbre_annee),
         )
+
+        if isinstance(result, dict):
+            log_to_postgres(
+                sk_id=int(sk_id_curr),
+                amt_credit=float(amt_credit),
+                nbre_annee=float(nbre_annee),
+                result_dict=result,
+            )
+            # print(f"DEBUG - Résultat du modèle : {result}")
+
+            return result
+
     except Exception as error:
         return {"erreur": str(error)}
 
