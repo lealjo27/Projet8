@@ -29,6 +29,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: Exécuter les tests
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: python -m pytest -v
 
   docker:
