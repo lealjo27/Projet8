@@ -16,4 +16,5 @@ dependencies = [
     "pytest>=9.1.1",
     "scikit-learn>=1.8.0",
     "xgboost>=3.4.0",
+    "psycopg2-binary>=2.9.0",
 ]
