@@ -3,6 +3,7 @@ import re
 import joblib
 import numpy as np
 import pandas as pd 
+import time
 
 
 MODEL_PATH = "credit_app/model/model.pkl"
@@ -94,6 +95,9 @@ def predict_client(sk_id_curr, amt_credit, nbre_annee):
     X_client = client[features].copy()
     X_client = X_client.replace([np.inf, -np.inf], np.nan)
 
+    # log de la durée execution
+    debut_inference = time.perf_counter()
+
     # Prédiction du risque
     probabilite = float(model.predict_proba(X_client)[0, 1])
 
@@ -111,6 +115,9 @@ def predict_client(sk_id_curr, amt_credit, nbre_annee):
         raison = "Risque client trop élevé"
     else:
         raison = "Critères respectés"
+
+    fin_inference = time.perf_counter()
+    temps_inference_ms = (fin_inference - debut_inference) * 1000
 
     return {
         "ID Client": int(sk_id_curr),
@@ -130,4 +137,5 @@ def predict_client(sk_id_curr, amt_credit, nbre_annee):
             "crédit refusé" if prediction else "crédit accordé"
         ),
         "Raison": raison,
+        "Temps d'inférence (ms)": round(temps_inference_ms, 2),
     }
