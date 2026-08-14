@@ -6,12 +6,12 @@ from credit_app.bdd.logger_db import log_to_postgres
 from credit_app.predictor import df, predict_client
 
 
-NOMBRE_CLIENTS = 98
+NOMBRE_CLIENTS = 100
 GRAINE_ALEATOIRE = 123
 JOURS_PAR_AN = 365.25
 
 # Dérive simulée
-HAUSSE_MONTANT_CREDIT = 1.20
+HAUSSE_MONTANT_CREDIT = 1.50
 BAISSE_REVENU = 0.85
 
 
