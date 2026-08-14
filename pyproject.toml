@@ -17,4 +17,9 @@ dependencies = [
     "psycopg2-binary>=2.9.0",
     "pyarrow>=25.0.1",
     "evidently>=0.7.21",
+    "matplotlib>=3.11.1",
+    "seaborn>=0.13.2",
+    "plotly>=5.24.1",
+    "streamlit>=1.59.1",
+    "sqlalchemy>=2.0.52",
 ]
