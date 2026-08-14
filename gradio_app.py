@@ -60,6 +60,7 @@ def gradio_predict(
                 amt_credit=float(montant_credit),
                 nbre_annee=float(duree_credit),
                 result_dict=resultat,
+                type_donnees="production",
             )
 
         return resultat
