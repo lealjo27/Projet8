@@ -45,30 +45,6 @@ def test_connection():
     return False
 
 
-def init_db():
-  """Crée la table de logs si elle n'existe pas"""
-  if not test_connection():
-    return
-
-  try:
-    conn = psycopg2.connect(DATABASE_URL)
-    cur = conn.cursor()
-    cur.execute("""
-            CREATE TABLE IF NOT EXISTS prediction_logs (
-                id SERIAL PRIMARY KEY,
-                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                sk_id_curr INT,
-                amt_credit FLOAT,
-                nbre_annee FLOAT,
-                score_result FLOAT
-            )
-        """)
-    conn.commit()
-    cur.close()
-    conn.close()
-    print("✅ Table 'prediction_logs' vérifiée/créée avec succès.")
-  except Exception as e:
-    print(f"❌ Erreur lors de l'initialisation de la table : {e}")
 
 def create_predictions_logs_table():
   """Crée la table 'prediction_logs' avec un champ JSONB si elle n'existe pas."""
@@ -106,5 +82,5 @@ def create_predictions_logs_table():
 # Si vous exécutez ce fichier directement pour tester
 if __name__ == "__main__":
   test_connection()
-  init_db()
+  
 
