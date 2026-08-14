@@ -6,7 +6,6 @@ numpy
 pyarrow
 scikit-learn
 xgboost==3.2.0
-mlflow
 joblib
 pytest
 psycopg2-binary
