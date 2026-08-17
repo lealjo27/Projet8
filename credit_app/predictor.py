@@ -46,6 +46,36 @@ df = df.rename(
 # Variables attendues par le modèle, dans le bon ordre
 variables_modele = list(modele.feature_names_in_)
 
+# Vérification réalisée une seule fois au démarrage
+variables_absentes = [
+    variable
+    for variable in variables_modele
+    if variable not in df.columns
+]
+
+if variables_absentes:
+    raise RuntimeError(
+        "Variables absentes des données client : "
+        + ", ".join(variables_absentes[:10])
+    )
+
+# Création d'un index pour accélérer la recherche des clients
+df_clients_indexe = (
+    df.dropna(subset=["SK_ID_CURR"])
+    .drop_duplicates(subset=["SK_ID_CURR"], keep="first")
+    .copy()
+)
+
+df_clients_indexe["SK_ID_CURR"] = (
+    df_clients_indexe["SK_ID_CURR"].astype(int)
+)
+
+# drop=False conserve SK_ID_CURR parmi les colonnes du modèle
+df_clients_indexe = df_clients_indexe.set_index(
+    "SK_ID_CURR",
+    drop=False,
+)
+
 
 # ------------------------------------------------------------------
 # Fonction de prédiction
@@ -156,18 +186,29 @@ def predict_client(
     # --------------------------------------------------------------
     # 4. Recherche du client
     # --------------------------------------------------------------
+########### Code avant optimation########""
+    # client = df.loc[
+    #     df["SK_ID_CURR"] == identifiant_client
+    # ].copy()
 
-    client = df.loc[
-        df["SK_ID_CURR"] == identifiant_client
-    ].copy()
+    # if client.empty:
+    #     raise ValueError(
+    #         f"Client {identifiant_client} introuvable."
+    #     )
 
-    if client.empty:
+    # # Conservation d'une seule ligne
+    # client = client.iloc[[0]].copy()
+########### Code avant optimation########""
+
+    try:
+        client = df_clients_indexe.loc[[identifiant_client]].copy()
+
+
+    except KeyError as erreur:
         raise ValueError(
             f"Client {identifiant_client} introuvable."
-        )
+        ) from erreur
 
-    # Conservation d'une seule ligne
-    client = client.iloc[[0]].copy()
 
     # --------------------------------------------------------------
     # 5. Calcul des données financières
@@ -252,17 +293,6 @@ def predict_client(
     # 8. Préparation des variables du modèle
     # --------------------------------------------------------------
 
-    variables_absentes = [
-        variable
-        for variable in variables_modele
-        if variable not in client.columns
-    ]
-
-    if variables_absentes:
-        raise ValueError(
-            "Variables absentes des données client : "
-            + ", ".join(variables_absentes[:10])
-        )
 
     donnees_client = client[variables_modele].copy()
 

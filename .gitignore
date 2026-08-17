@@ -31,3 +31,4 @@ hf-space/
 
 mlflow_archive/
 .env
+/reports/
