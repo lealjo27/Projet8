@@ -3,21 +3,13 @@
 <p align="center">
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" width="50" height="50"/>
   &nbsp;
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" alt="Pandas" width="50" height="50"/>
-  &nbsp;
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/scikitlearn/scikitlearn-original.svg" alt="Scikit-learn" width="50" height="50"/>
-  &nbsp;
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" width="50" height="50"/>
   &nbsp;
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" width="50" height="50"/>
   &nbsp;
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/githubactions/githubactions-original.svg" alt="GitHub Actions" width="50" height="50"/>
-  &nbsp;
   <img src="https://cdn.simpleicons.org/gradio/F97316" alt="Gradio" width="50" height="50"/>
   &nbsp;
   <img src="https://cdn.simpleicons.org/streamlit/FF4B4B" alt="Streamlit" width="50" height="50"/>
-  &nbsp;
-  <img src="https://cdn.simpleicons.org/mlflow/0194E2" alt="MLflow" width="50" height="50"/>
   &nbsp;
   <img src="https://cdn.simpleicons.org/render/46E3B7" alt="Render" width="50" height="50"/>
 </p>
