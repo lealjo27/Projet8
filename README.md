@@ -1,47 +1,127 @@
-# Déploiement et monitoring d’un modèle de scoring crédit
+# 💳 Déploiement et monitoring d’un modèle de scoring crédit
 
-Projet 8 de la formation **AI Engineer d’OpenClassrooms**.
+<p align="center">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" width="50" height="50"/>
+  &nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" alt="Pandas" width="50" height="50"/>
+  &nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/scikitlearn/scikitlearn-original.svg" alt="Scikit-learn" width="50" height="50"/>
+  &nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" width="50" height="50"/>
+  &nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" width="50" height="50"/>
+  &nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/githubactions/githubactions-original.svg" alt="GitHub Actions" width="50" height="50"/>
+  &nbsp;
+  <img src="https://cdn.simpleicons.org/gradio/F97316" alt="Gradio" width="50" height="50"/>
+  &nbsp;
+  <img src="https://cdn.simpleicons.org/streamlit/FF4B4B" alt="Streamlit" width="50" height="50"/>
+  &nbsp;
+  <img src="https://cdn.simpleicons.org/mlflow/0194E2" alt="MLflow" width="50" height="50"/>
+  &nbsp;
+  <img src="https://cdn.simpleicons.org/render/46E3B7" alt="Render" width="50" height="50"/>
+</p>
 
-Ce projet fait suite au Projet 6, dans lequel plusieurs modèles de scoring crédit ont été comparés avec **MLflow**. Le modèle ayant obtenu les meilleurs résultats a été sélectionné pour être déployé et monitoré.
+<p align="center">
+  <strong>Projet 8 — Formation AI Engineer OpenClassrooms</strong>
+</p>
 
-Le département fictif **Crédit Express** de l’entreprise **Prêt à Dépenser** souhaite utiliser ce modèle pour assister ses collaborateurs dans l’étude des demandes de crédit.
+<p align="center">
+  Application de scoring crédit, journalisation PostgreSQL, monitoring du data drift et déploiement continu.
+</p>
 
 ---
 
-## Applications en ligne
+## 📋 Table des matières
 
-| Application | Accès |
+- [🎯 Présentation](#-présentation)
+- [🌐 Applications en ligne](#-applications-en-ligne)
+- [✅ Fonctionnalités](#-fonctionnalités)
+- [🏗️ Architecture](#️-architecture)
+- [🛠️ Technologies utilisées](#️-technologies-utilisées)
+- [💻 Application de scoring](#-application-de-scoring)
+- [⚖️ Décision de crédit](#️-décision-de-crédit)
+- [🗄️ Journalisation PostgreSQL](#️-journalisation-postgresql)
+- [⚡ Optimisation des performances](#-optimisation-des-performances)
+- [📊 Monitoring](#-monitoring)
+- [📈 Simulation du data drift](#-simulation-du-data-drift)
+- [📁 Structure du projet](#-structure-du-projet)
+- [📦 Installation locale](#-installation-locale)
+- [⚙️ Configuration](#️-configuration)
+- [▶️ Lancement](#️-lancement)
+- [🧪 Tests](#-tests)
+- [🐳 Docker](#-docker)
+- [🚀 Pipeline CI/CD](#-pipeline-cicd)
+- [🔐 Sécurité et RGPD](#-sécurité-et-rgpd)
+- [⚠️ Limites](#️-limites)
+- [🔭 Perspectives](#-perspectives)
+- [👤 Auteur](#-auteur)
+
+---
+
+## 🎯 Présentation
+
+Ce projet fait suite au **Projet 6**, pendant lequel plusieurs modèles de scoring crédit ont été entraînés et comparés.
+
+Les expérimentations ont été suivies avec **MLflow**. Le modèle ayant obtenu les meilleurs résultats selon les métriques définies a été sélectionné pour être mis en production.
+
+Le département fictif **Crédit Express** de l’entreprise **Prêt à Dépenser** souhaite utiliser ce modèle afin d’aider ses collaborateurs à étudier les demandes de crédit.
+
+Le Projet 8 transforme ce modèle expérimental en un service :
+
+- accessible depuis une interface web ;
+- testé automatiquement ;
+- conteneurisé avec Docker ;
+- déployé dans le cloud ;
+- journalisé dans PostgreSQL ;
+- surveillé grâce à un dashboard de monitoring.
+
+---
+
+## 🌐 Applications en ligne
+
+| Ressource | Accès |
 |---|---|
-| Application de scoring Gradio | https://projet8-mvym.onrender.com/ |
-| Dashboard Streamlit | https://m7bijaguzhxwlxcmmoocar.streamlit.app/ |
-| Repository GitHub | https://github.com/lealjo27/Projet8/ |
+| 💳 Application de scoring Gradio | [Ouvrir l’application](https://projet8-mvym.onrender.com/) |
+| 📊 Dashboard Streamlit | [Ouvrir le dashboard](https://m7bijaguzhxwlxcmmoocar.streamlit.app/) |
+| 💻 Repository GitHub | [Consulter le code](https://github.com/lealjo27/Projet8/) |
 
-> Les applications utilisent des offres cloud gratuites. Un délai de démarrage peut être nécessaire après une période d’inactivité.
-
----
-
-## Objectifs du projet
-
-Le projet consiste à transformer un modèle de machine learning en un service utilisable en production.
-
-Les principaux objectifs sont :
-
-- déployer une application de scoring ;
-- afficher un score et une décision compréhensible ;
-- enregistrer les prédictions dans PostgreSQL ;
-- automatiser les tests et le déploiement ;
-- surveiller les données et les performances ;
-- détecter une éventuelle dérive des données ;
-- mesurer et optimiser la latence de l’application.
+> [!NOTE]
+> Les applications utilisent des offres cloud gratuites. Un temps de démarrage peut être nécessaire après une période d’inactivité.
 
 ---
 
-## Architecture
+## ✅ Fonctionnalités
+
+- ✅ Interface de scoring développée avec Gradio
+- ✅ Récupération d’un profil à partir de l’identifiant client
+- ✅ Modification des informations de la demande
+- ✅ Calcul du score de risque
+- ✅ Application d’un seuil de décision
+- ✅ Vérification du taux d’endettement
+- ✅ Explication de la décision
+- ✅ Journalisation dans PostgreSQL / NeonDB
+- ✅ Logging exécuté dans un thread d’arrière-plan
+- ✅ Dashboard Streamlit et Plotly
+- ✅ Comparaison des données de référence et de production
+- ✅ Simulation et visualisation d’un data drift
+- ✅ Analyse des performances avec `cProfile`
+- ✅ Tests automatisés avec `pytest`
+- ✅ Conteneurisation avec Docker
+- ✅ Pipeline CI/CD avec GitHub Actions
+- ✅ Déploiement cloud sur Render
+
+---
+
+## 🏗️ Architecture
+
+### Architecture applicative
 
 ```mermaid
 flowchart LR
     U[Collaborateur Crédit Express]
     G[Application Gradio]
+    P[Préparation des données]
     M[Modèle de scoring]
     R[Score et décision]
     T[ThreadPoolExecutor]
@@ -49,7 +129,8 @@ flowchart LR
     S[Dashboard Streamlit]
 
     U --> G
-    G --> M
+    G --> P
+    P --> M
     M --> R
     R --> U
     R --> T
@@ -57,44 +138,58 @@ flowchart LR
     DB --> S
 ```
 
-### Pipeline CI/CD
+### Architecture CI/CD
 
 ```mermaid
 flowchart LR
     A[Push GitHub]
     B[GitHub Actions]
     C[Tests pytest]
-    D[Image Docker]
+    D[Construction Docker]
     E[Déploiement Render]
 
     A --> B
     B --> C
+    C -->|Branche dev| F[Fin du workflow]
     C -->|Branche main| D
     D --> E
 ```
 
 ---
 
-## Technologies utilisées
+## 🛠️ Technologies utilisées
+
+<p align="center">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original-wordmark.svg" alt="Python" width="70"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original-wordmark.svg" alt="Pandas" width="70"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original-wordmark.svg" alt="NumPy" width="70"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/scikitlearn/scikitlearn-original.svg" alt="Scikit-learn" width="70"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg" alt="PostgreSQL" width="70"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original-wordmark.svg" alt="Docker" width="70"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/githubactions/githubactions-original.svg" alt="GitHub Actions" width="60"/>
+</p>
 
 | Besoin | Technologie |
 |---|---|
 | Langage | Python 3.11 |
+| Manipulation des données | Pandas et NumPy |
+| Modèle de scoring | Scikit-learn / XGBoost |
 | Suivi des expérimentations | MLflow |
 | Interface de scoring | Gradio |
-| Dashboard | Streamlit et Plotly |
+| Dashboard | Streamlit |
+| Visualisations | Plotly |
 | Base de données | PostgreSQL / NeonDB |
 | Tests | pytest |
+| Profiling | cProfile |
 | Conteneurisation | Docker |
 | Intégration continue | GitHub Actions |
 | Déploiement | Render |
-| Manipulation des données | Pandas et NumPy |
 
 ---
 
-## Application de scoring
+## 💻 Application de scoring
 
-L’application Gradio permet au collaborateur de saisir :
+L’application Gradio permet au collaborateur de saisir ou de modifier :
 
 - l’identifiant du client ;
 - le montant du crédit ;
@@ -106,7 +201,9 @@ L’application Gradio permet au collaborateur de saisir :
 
 À partir de l’identifiant client, l’application récupère automatiquement les autres variables nécessaires au modèle.
 
-Elle retourne ensuite :
+### Résultats affichés
+
+L’application retourne :
 
 - le score de risque ;
 - le seuil de décision ;
@@ -116,72 +213,98 @@ Elle retourne ensuite :
 - le temps d’inférence ;
 - le temps total de traitement.
 
+### Parcours d’une prédiction
+
+```text
+Saisie des informations
+        ↓
+Récupération du profil client
+        ↓
+Validation et préparation des variables
+        ↓
+Calcul du score de risque
+        ↓
+Vérification du taux d’endettement
+        ↓
+Affichage de la décision
+        ↓
+Journalisation dans PostgreSQL
+```
+
 ---
 
-## Décision de crédit
+## ⚖️ Décision de crédit
 
-La décision dépend de deux critères :
+La décision repose sur deux critères :
 
 1. le score de risque calculé par le modèle ;
 2. le taux d’endettement du client.
 
-Le crédit est refusé si :
+Le crédit est refusé lorsque :
 
 ```text
-score de risque supérieur ou égal au seuil du modèle
+Score de risque ≥ seuil du modèle
 OU
-taux d’endettement supérieur à 35 %
+Taux d’endettement > 35 %
 ```
 
 Dans le cas contraire, le crédit est accordé.
 
-> Dans une véritable application bancaire, le résultat du modèle devrait rester une aide à la décision et faire l’objet d’une validation humaine.
+Les principales raisons retournées par l’application sont :
+
+- risque client trop élevé ;
+- taux d’endettement trop élevé ;
+- critères respectés.
+
+> [!IMPORTANT]
+> Dans une véritable application bancaire, le résultat du modèle doit constituer une aide à la décision et faire l’objet d’une validation humaine.
 
 ---
 
-## Journalisation des prédictions
+## 🗄️ Journalisation PostgreSQL
 
 Chaque prédiction est enregistrée dans une base **PostgreSQL hébergée sur NeonDB**.
 
-Les données enregistrées comprennent notamment :
+### Données enregistrées
 
-- l’identifiant du client ;
-- la date de la prédiction ;
-- les principales informations de la demande ;
-- le score de risque ;
-- la décision ;
-- le taux d’endettement ;
-- le temps d’inférence ;
-- la latence totale ;
-- le type de données : référence ou production.
+- date et heure de la prédiction ;
+- identifiant du client ;
+- principales informations de la demande ;
+- score de risque ;
+- seuil utilisé ;
+- décision et raison ;
+- taux d’endettement ;
+- temps d’inférence ;
+- latence totale ;
+- type de données : référence ou production.
 
-### Écriture en arrière-plan
+### Logging en arrière-plan
 
-L’écriture dans PostgreSQL est exécutée dans un thread d’arrière-plan avec :
+L’écriture dans PostgreSQL est exécutée avec :
 
 ```python
 ThreadPoolExecutor
 ```
 
-Le résultat est ainsi retourné à l’utilisateur sans attendre la fin de l’appel réseau vers NeonDB.
+Le résultat est retourné à l’utilisateur sans attendre la fin de l’appel réseau vers NeonDB.
 
 ```text
-Prédiction
-├── Réponse immédiate à l’utilisateur
-└── Écriture PostgreSQL en arrière-plan
+                      ┌──> Réponse à l’utilisateur
+Prédiction terminée ──┤
+                      └──> Écriture PostgreSQL en arrière-plan
 ```
 
-Il s’agit d’une exécution concurrente avec un thread, et non d’une implémentation avec `async/await`.
+Il s’agit d’une exécution concurrente dans un thread, et non d’une implémentation fondée sur `async/await`.
 
 ---
 
-## Optimisation des performances
+## ⚡ Optimisation des performances
 
-Les performances de l’application ont été analysées avec **cProfile** et des benchmarks de latence.
+Les performances ont été analysées avec **cProfile** et des benchmarks de latence.
 
-### Optimisation de la recherche client
+### 1. Optimisation de la recherche client
 
-La recherche initiale utilisait un masque booléen Pandas :
+La première version utilisait un masque booléen Pandas :
 
 ```python
 client = df.loc[
@@ -189,13 +312,13 @@ client = df.loc[
 ].copy()
 ```
 
-Le DataFrame est désormais indexé par identifiant client afin de permettre un accès direct :
+Le DataFrame est désormais indexé avec `SK_ID_CURR` :
 
 ```python
 client = df_clients_indexe.loc[identifiant_client].copy()
 ```
 
-Résultats du premier benchmark :
+### Résultats
 
 | Métrique | Avant | Après | Gain |
 |---|---:|---:|---:|
@@ -203,74 +326,100 @@ Résultats du premier benchmark :
 | p95 | 2 157,11 ms | 2 127,17 ms | 1,4 % |
 | p99 | 2 730,69 ms | 2 171,12 ms | 20,5 % |
 
-L’amélioration concerne principalement les requêtes les plus lentes. Plusieurs répétitions sont nécessaires pour confirmer le gain sur le p99.
+Cette optimisation améliore principalement les requêtes les plus lentes. Plusieurs répétitions restent nécessaires pour confirmer le gain sur le p99.
 
-### Identification du goulot PostgreSQL
+### 2. Identification du goulot PostgreSQL
 
-Le profiling a montré que l’écriture synchrone dans PostgreSQL représentait la majorité du temps de traitement :
+Le profiling a montré que l’écriture synchrone dans PostgreSQL représentait la majorité du temps de traitement.
 
 | Étape | Temps | Part |
 |---|---:|---:|
 | Inférence du modèle | 31 ms | 2,3 % |
 | Prédiction complète | 35,16 ms | 2,6 % |
 | Logging PostgreSQL | 1 341,83 ms | 97,4 % |
-| Total | 1 376,99 ms | 100 % |
+| **Total** | **1 376,99 ms** | **100 %** |
 
 Le principal goulot d’étranglement était donc l’appel réseau vers PostgreSQL, et non le modèle.
 
-### Résultats après optimisation
+### 3. Passage du logging en arrière-plan
 
-Le passage du logging en arrière-plan a permis d’obtenir :
+Le logging synchrone a été remplacé par une tâche exécutée dans un thread secondaire.
 
-- une latence médiane passant de **1 908,55 ms à 354,00 ms** ;
-- une réduction du p50 de **81,5 %** ;
-- une réduction du p95 de **78,6 %** ;
-- une réduction du p99 de **76,9 %**.
+### Gains mesurés
 
-Cette optimisation ne modifie pas :
+| Métrique | Gain |
+|---|---:|
+| p50 | 81,5 % |
+| p95 | 78,6 % |
+| p99 | 76,9 % |
+
+La latence médiane est passée de :
+
+```text
+1 908,55 ms → 354,00 ms
+```
+
+### Non-régression
+
+L’optimisation ne modifie pas :
 
 - le modèle ;
-- les variables utilisées ;
+- les variables transmises ;
 - le score calculé ;
 - le seuil ;
+- le taux d’endettement ;
 - les règles de décision.
 
 ### Limites
 
 `ThreadPoolExecutor` est adapté à ce POC, mais :
 
-- une écriture en attente peut être perdue si l’application s’arrête brutalement ;
-- la file interne peut s’accumuler en cas de forte charge.
+- une écriture peut être perdue si l’application s’arrête brutalement ;
+- la file interne peut s’accumuler sous forte charge.
 
-Une application critique pourrait utiliser une file persistante comme **Redis avec Celery ou RQ**.
+Pour une application critique, une file persistante comme **Redis avec Celery ou RQ** serait plus robuste.
 
 ---
 
-## Monitoring
+## 📊 Monitoring
 
-Le dashboard Streamlit permet de suivre les données enregistrées dans PostgreSQL.
+Le dashboard développé avec **Streamlit** et **Plotly** charge les prédictions enregistrées dans PostgreSQL.
 
-Il permet notamment de surveiller :
+Il permet de surveiller trois dimensions.
 
-- le nombre de prédictions ;
-- les scores de risque ;
-- les accords et les refus ;
-- le montant des crédits ;
-- les revenus ;
-- le taux d’endettement ;
-- le temps d’inférence ;
-- la latence applicative ;
-- l’évolution des distributions.
+### Données
+
+- montant des crédits ;
+- revenus ;
+- âge ;
+- durée du crédit ;
+- taux d’endettement ;
+- évolution des distributions.
+
+### Métier
+
+- nombre de prédictions ;
+- scores de risque ;
+- taux d’accord ;
+- taux de refus ;
+- évolution des décisions.
+
+### Technique
+
+- temps d’inférence ;
+- latence totale ;
+- latence médiane ;
+- percentiles élevés.
 
 Le dashboard compare les données de référence avec les données simulées de production.
 
 ---
 
-## Simulation du data drift
+## 📈 Simulation du data drift
 
-Un data drift a été volontairement introduit afin de tester le dashboard de monitoring.
+Un data drift a été introduit volontairement pour vérifier la capacité du dashboard à détecter une évolution des données.
 
-Les transformations appliquées sont :
+### Transformations appliquées
 
 ```python
 montant_credit_production = montant_credit_reference * 1.50
@@ -282,58 +431,83 @@ Cela correspond à :
 - une augmentation de **50 %** des montants de crédit ;
 - une diminution de **15 %** des revenus.
 
+### Objectifs
+
 Cette simulation permet d’observer les effets possibles sur :
 
 - les distributions des variables ;
 - le taux d’endettement ;
 - les scores de risque ;
-- les accords et les refus.
+- les décisions d’accord ou de refus.
 
-> Le drift est simulé pour tester le dispositif de surveillance. Il ne correspond pas à une dérive réelle observée en production.
+Les comparaisons utilisent notamment :
+
+- des histogrammes normalisés ;
+- des distributions cumulées ;
+- des graphiques temporels ;
+- des indicateurs métier.
+
+> [!NOTE]
+> Le drift est simulé pour tester le dispositif de monitoring. Il ne correspond pas à une dérive réelle observée en production.
 
 ---
 
-## Structure du projet
+## 📁 Structure du projet
 
 ```text
 Projet8/
-├── .github/workflows/       # Pipeline GitHub Actions
+├── .devcontainer/                 # Configuration du conteneur de développement
+├── .github/
+│   └── workflows/                 # Workflows GitHub Actions
 ├── credit_app/
-│   ├── bdd/                 # Connexion et logging PostgreSQL
-│   ├── data/                # Données clients
-│   ├── model/               # Modèle de scoring
-│   └── predictor.py         # Logique de prédiction
-├── notebooks/               # Analyses et expérimentations
-├── tests/                   # Tests pytest
-├── app.py                   # Point d’entrée
-├── gradio_app.py            # Interface Gradio
-├── dashboard_monitoring.py  # Dashboard Streamlit
-├── Dockerfile
-├── requirements.txt
-└── pyproject.toml
+│   ├── bdd/                       # Connexion et logging PostgreSQL
+│   ├── data/                      # Données clients
+│   ├── model/                     # Modèle de scoring
+│   ├── scripts/                   # Scripts complémentaires
+│   └── predictor.py               # Logique de prédiction
+├── notebooks/                     # Analyses et benchmarks
+├── tests/                         # Tests automatisés
+├── app.py                         # Point d’entrée Render
+├── gradio_app.py                  # Interface Gradio
+├── dashboard_monitoring.py        # Dashboard Streamlit
+├── Dockerfile                     # Image Docker
+├── requirements.txt               # Dépendances
+├── pyproject.toml                 # Configuration Python
+└── README.md                      # Documentation
 ```
 
-Cette organisation correspond aux principaux fichiers et dossiers visibles dans le dépôt. ([github.com](https://github.com/lealjo27/Projet8))
+### Fichiers principaux
+
+| Fichier | Rôle |
+|---|---|
+| `app.py` | Point d’entrée de l’application |
+| `gradio_app.py` | Interface utilisateur Gradio |
+| `dashboard_monitoring.py` | Dashboard de monitoring |
+| `credit_app/predictor.py` | Préparation des données et prédiction |
+| `credit_app/bdd/` | Connexion et écriture PostgreSQL |
+| `tests/` | Tests automatisés |
+| `Dockerfile` | Construction du conteneur |
+| `.github/workflows/` | Tests, build et déploiement |
 
 ---
 
-## Installation locale
+## 📦 Installation locale
 
 ### Prérequis
 
 - Python 3.11 ;
 - Git ;
 - une base PostgreSQL ou NeonDB ;
-- Docker, si vous souhaitez utiliser le conteneur.
+- Docker, si l’application doit être exécutée dans un conteneur.
 
-### 1. Cloner le projet
+### 1. Cloner le repository
 
 ```bash
 git clone https://github.com/lealjo27/Projet8.git
 cd Projet8
 ```
 
-### 2. Créer un environnement virtuel
+### 2. Créer l’environnement virtuel
 
 #### Windows
 
@@ -358,7 +532,7 @@ pip install -r requirements.txt
 
 ---
 
-## Configuration de PostgreSQL
+## ⚙️ Configuration
 
 Créer un fichier `.env` à la racine du projet :
 
@@ -366,17 +540,18 @@ Créer un fichier `.env` à la racine du projet :
 DATABASE_URL=postgresql://utilisateur:mot_de_passe@hote/base?sslmode=require
 ```
 
-Le fichier `.env` ne doit jamais être ajouté au repository Git.
-
-La même variable doit être configurée dans :
+Cette variable doit également être configurée sur :
 
 - Render ;
 - Streamlit Community Cloud ;
 - GitHub Secrets, si les tests utilisent PostgreSQL.
 
+> [!WARNING]
+> Le fichier `.env` contient des informations sensibles. Il ne doit jamais être ajouté au repository Git.
+
 ---
 
-## Lancement
+## ▶️ Lancement
 
 ### Application Gradio
 
@@ -384,36 +559,56 @@ La même variable doit être configurée dans :
 python app.py
 ```
 
+L’application est ensuite disponible sur le port configuré par la variable `PORT`.
+
 ### Dashboard Streamlit
 
 ```bash
 streamlit run dashboard_monitoring.py
 ```
 
+Le dashboard est généralement disponible à l’adresse :
+
+```text
+http://localhost:8501
+```
+
 ---
 
-## Tests
+## 🧪 Tests
 
-Les tests sont exécutés avec `pytest` :
+Les tests sont exécutés avec `pytest`.
+
+### Lancer tous les tests
 
 ```bash
 python -m pytest -v
 ```
 
-Ils vérifient notamment :
+### Lancer les tests avec affichage des sorties
 
-- la prédiction ;
+```bash
+python -m pytest -v -s
+```
+
+Les tests vérifient notamment :
+
+- la fonction de prédiction ;
 - la validation des entrées ;
 - le format des résultats ;
 - les règles de décision ;
 - la connexion PostgreSQL ;
 - l’enregistrement des prédictions.
 
-Les services externes doivent être simulés avec des mocks lorsque cela est possible.
+Les services externes doivent être simulés avec des mocks lorsque cela est possible afin de rendre les tests reproductibles.
 
 ---
 
-## Docker
+## 🐳 Docker
+
+<p align="center">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original-wordmark.svg" alt="Docker" width="120"/>
+</p>
 
 ### Construire l’image
 
@@ -431,7 +626,7 @@ docker run --rm \
   projet8-scoring
 ```
 
-L’application est ensuite accessible à l’adresse :
+L’application est ensuite disponible à l’adresse :
 
 ```text
 http://localhost:7860
@@ -439,38 +634,54 @@ http://localhost:7860
 
 ---
 
-## Pipeline CI/CD
+## 🚀 Pipeline CI/CD
 
-La pipeline est automatisée avec GitHub Actions.
+La pipeline est automatisée avec **GitHub Actions**.
 
-### Push sur `dev`
+### Branche `dev`
 
 ```text
 Push sur dev
-→ installation des dépendances
-→ exécution des tests
-→ fin du workflow
+      ↓
+Installation des dépendances
+      ↓
+Exécution des tests
+      ↓
+Fin du workflow
 ```
 
-La branche `dev` ne déclenche pas de déploiement.
+La branche `dev` permet de valider le code sans construire l’image Docker ni déclencher le déploiement.
 
-### Push sur `main`
+### Branche `main`
 
 ```text
 Push sur main
-→ installation des dépendances
-→ tests pytest
-→ construction de l’image Docker
-→ déploiement sur Render
+      ↓
+Installation des dépendances
+      ↓
+Exécution des tests
+      ↓
+Construction de l’image Docker
+      ↓
+Déploiement sur Render
 ```
 
 Le déploiement est exécuté uniquement si les tests réussissent.
 
+### Secrets
+
 Les informations sensibles sont stockées dans les **GitHub Secrets** et dans les variables d’environnement des plateformes cloud.
+
+Exemples :
+
+```text
+DATABASE_URL
+RENDER_DEPLOY_HOOK_URL
+```
 
 ---
 
-## Sécurité et RGPD
+## 🔐 Sécurité et RGPD
 
 Ce projet est un **POC pédagogique** utilisant des données de démonstration.
 
@@ -478,45 +689,72 @@ Une utilisation avec de véritables données clients nécessiterait notamment :
 
 - une authentification des utilisateurs ;
 - une gestion des rôles et des autorisations ;
-- une durée de conservation définie ;
-- une minimisation des données enregistrées ;
-- une procédure d’accès, de correction et de suppression ;
+- une politique de conservation des données ;
+- une minimisation des informations enregistrées ;
+- une procédure d’accès, de rectification et de suppression ;
 - une analyse des biais du modèle ;
 - une validation humaine de la décision ;
 - une analyse d’impact RGPD ;
-- une vérification des fournisseurs cloud et des transferts de données.
+- un encadrement des fournisseurs cloud ;
+- une procédure de gestion des incidents.
 
+### Principaux risques
+
+| Risque | Mesure recommandée |
+|---|---|
+| Accès non autorisé | Authentification et gestion des rôles |
+| Fuite de données | Chiffrement et limitation des accès |
+| Conservation excessive | Politique de suppression automatique |
+| Décision automatisée | Validation humaine |
+| Biais du modèle | Analyse par sous-population |
+| Fuite de secrets | Variables d’environnement et GitHub Secrets |
+
+> [!IMPORTANT]
 > L’application actuelle ne doit pas être considérée comme prête à traiter de véritables demandes de crédit.
 
 ---
 
-## Limites
+## ⚠️ Limites
 
-- le data drift est simulé ;
-- les performances métier réelles ne sont pas disponibles ;
-- les services cloud gratuits ont des ressources limitées ;
-- les applications peuvent nécessiter un temps de démarrage ;
-- le logging par thread ne garantit pas la persistance des tâches ;
-- le dashboard ne déclenche pas encore d’alertes ;
-- l’authentification n’est pas encore mise en place.
-
----
-
-## Perspectives
-
-Les évolutions possibles sont :
-
-- ajouter des alertes automatiques de drift ;
-- surveiller la performance réelle du modèle ;
-- intégrer MLflow Model Registry ;
-- automatiser le réentraînement ;
-- utiliser une file persistante pour le logging ;
-- ajouter une authentification ;
-- renforcer la sécurité et la conformité RGPD ;
-- déployer l’application sur une infrastructure plus robuste.
+- Le data drift est simulé.
+- Les performances métier réelles ne sont pas disponibles.
+- Les services cloud gratuits disposent de ressources limitées.
+- Les applications peuvent nécessiter un temps de démarrage.
+- Le logging par thread ne garantit pas la persistance des tâches.
+- Le dashboard ne déclenche pas encore d’alertes automatiques.
+- L’authentification n’est pas encore mise en place.
+- La conformité RGPD complète n’est pas implémentée.
 
 ---
 
-## Auteur
+## 🔭 Perspectives
 
-Projet réalisé par **Jo - @lealjo27 ** dans le cadre de la formation **AI Engineer OpenClassrooms**.
+- Ajouter des alertes automatiques de drift.
+- Suivre la performance réelle du modèle.
+- Intégrer MLflow Model Registry.
+- Automatiser le réentraînement.
+- Versionner les modèles déployés.
+- Utiliser une file persistante pour le logging.
+- Ajouter une authentification.
+- Renforcer la sécurité et la conformité RGPD.
+- Déployer l’application sur une infrastructure plus robuste.
+
+---
+
+## 👤 Auteur
+
+**Jo — [@lealjo27](https://github.com/lealjo27)**
+
+Projet réalisé dans le cadre de la formation **AI Engineer OpenClassrooms**.
+
+<p align="center">
+  <a href="https://github.com/lealjo27/Projet8">
+    <img src="https://img.shields.io/badge/GitHub-Projet%208-181717?style=for-the-badge&logo=github" alt="GitHub Projet 8"/>
+  </a>
+  <a href="https://projet8-mvym.onrender.com/">
+    <img src="https://img.shields.io/badge/Gradio-Application-F97316?style=for-the-badge&logo=gradio" alt="Application Gradio"/>
+  </a>
+  <a href="https://m7bijaguzhxwlxcmmoocar.streamlit.app/">
+    <img src="https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B?style=for-the-badge&logo=streamlit" alt="Dashboard Streamlit"/>
+  </a>
+</p>
