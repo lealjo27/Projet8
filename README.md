@@ -153,12 +153,8 @@ flowchart LR
 
 <p align="center">
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original-wordmark.svg" alt="Python" width="70"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original-wordmark.svg" alt="Pandas" width="70"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original-wordmark.svg" alt="NumPy" width="70"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/scikitlearn/scikitlearn-original.svg" alt="Scikit-learn" width="70"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg" alt="PostgreSQL" width="70"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original-wordmark.svg" alt="Docker" width="70"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/githubactions/githubactions-original.svg" alt="GitHub Actions" width="60"/>
 </p>
 
 | Besoin | Technologie |
@@ -369,8 +365,6 @@ L’optimisation ne modifie pas :
 - une écriture peut être perdue si l’application s’arrête brutalement ;
 - la file interne peut s’accumuler sous forte charge.
 
-Pour une application critique, une file persistante comme **Redis avec Celery ou RQ** serait plus robuste.
-
 ---
 
 ## 📊 Monitoring
@@ -538,8 +532,7 @@ Cette variable doit également être configurée sur :
 - Streamlit Community Cloud ;
 - GitHub Secrets, si les tests utilisent PostgreSQL.
 
-> [!WARNING]
-> Le fichier `.env` contient des informations sensibles. Il ne doit jamais être ajouté au repository Git.
+
 
 ---
 
